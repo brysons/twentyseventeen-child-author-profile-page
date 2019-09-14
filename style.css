@@ -1,0 +1,29 @@
+/*
+Theme Name: Twenty Seventeen Child With Author Profile Pages
+Theme URI: https://github.com/brysons/twentyseventeen-child-author-profile-page
+description: >-
+  Adds user profile pages to the Twenty Seventeen theme from wordpress. Note:
+  Font Awesome plugin is required for social media icons.
+Author: Bryson Steadman
+Author URI: https://nbdstead.com/author/brysons
+Template: twentyseventeen
+Version: 1.0.1
+License: GNU General Public License v2 or later
+License URI: http://www.gnu.org/licenses/gpl-2.0.html
+Tags: light, dark, two-columns, right-sidebar, responsive-layout, accessibility-ready
+Text Domain: twentyseventeen-child-author-profile-page
+*/
+
+.UserInfo {
+	display: flex;
+	flex-wrap: wrap;
+	margin: 0 -1em;
+}
+
+.UserInfo > * {
+	margin: 0 1em;
+}
+
+.UserInfo > .avatar {
+	min-width: 100px;
+}
