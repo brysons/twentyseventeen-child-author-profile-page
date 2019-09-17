@@ -29,9 +29,9 @@ function social_link($user_data, $site) {
 		return "";
 	}
 	
-	$url = $base_url . "?rel=me";
+	$url = $base_url;
 	return <<<HTML
-	<a href="{$url}">
+	<a href="{$url}" rel="me">
 		<i class="fa fa-${site}${icon_type}" aria-hidden="true"></i>
 	</a>
 HTML;

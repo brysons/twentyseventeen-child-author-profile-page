@@ -1,10 +1,5 @@
 <?php get_header(); ?>
 
-<?php 
-define( 'WP_DEBUG', true ); 
-define( 'WP_DEBUG_DISPLAY', true);
-?>
-
 <div class="wrap">
 
 <!-- This sets the $curauth variable -->
@@ -46,10 +41,10 @@ define( 'WP_DEBUG_DISPLAY', true);
 <!-- The Loop -->
 
     <?php if ( have_posts() ) : while ( have_posts() ) : the_post(); ?>
-        <li>
-            <a href="<?php the_permalink() ?>" rel="bookmark" title="Permanent Link: <?php the_title(); ?>">
+        <li class="h-entry">
+            <a class="u-url p-name" href="<?php the_permalink() ?>" rel="bookmark" title="Permanent Link: <?php the_title(); ?>">
             <?php the_title(); ?></a>,
-            <?php the_time('d M Y'); ?> in <?php the_category('&');?>
+            <span class="dt-published"><?php the_time('d M Y'); ?></span> in <span class="p-category"><?php the_category('&');?></span>
         </li>
 
     <?php endwhile; else: ?>
