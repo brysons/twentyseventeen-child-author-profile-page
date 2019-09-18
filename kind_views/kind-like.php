@@ -15,8 +15,15 @@ $embed  = self::get_embed( $url );
 
 <section class="response u-like-of h-cite">
 <header>
+<h3 class="post-kind-summary">
 <?php
-echo Kind_Taxonomy::get_before_kind( 'like' );
+echo '💜 liked ';
+echo sprintf( '<a href="%1s">a post</a> by ', $url );
+echo sprintf( '%1s.', $cite['name'] ); 
+?>
+</h3>
+	
+<?php
 if ( ! $embed ) {
 	if ( ! array_key_exists( 'name', $cite ) ) {
 		$cite['name'] = self::get_post_type_string( $url );
@@ -35,6 +42,7 @@ if ( ! $embed ) {
 }
 ?>
 </header>
+
 <?php
 if ( $cite ) {
 	if ( $embed ) {
