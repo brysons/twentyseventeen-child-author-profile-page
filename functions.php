@@ -22,7 +22,7 @@ function social_link($user_data, $site) {
         $base_url = $user_data->flickr ? "https://flickr.com/" . $user_data->flickr : null;
         break;
     case 'instagram':
-        $base_url = $user_data->instagram ? "https://instagram.com/" . $user_data->instagram : null;
+        $base_url = $user_data->instagram ? "https://www.instagram.com/" . $user_data->instagram : null;
         break;
   }
 	if (! isset($base_url)) {
@@ -31,7 +31,7 @@ function social_link($user_data, $site) {
 	
 	$url = $base_url;
 	return <<<HTML
-	<a href="{$url}" rel="me">
+	<a href="{$url}" rel="me" class="u-url">
 		<i class="fa fa-${site}${icon_type}" aria-hidden="true"></i>
 	</a>
 HTML;
