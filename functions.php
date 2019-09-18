@@ -37,4 +37,30 @@ function social_link($user_data, $site) {
 HTML;
 }
 
+// Filters some IndieWeb Post Kinds out of most views
+// add_action( 'pre_get_posts', 'kind_filter_config' );
+function kind_filter_config( $query ) {
+	if ( is_admin() ) {
+		return;
+	}
+	// TODO: Get this from config
+	$exclude = 'like';
+	if ( ! $exclude ) {
+		return;
+	}
+	$operator = 'NOT IN';
+	$filter = explode( ',', $exclude );
+	$query->set(
+		'tax_query',
+		array(
+			array(
+				'taxonomy' => 'kind',
+				'field' => 'slug',
+				'terms' => $filter,
+				'operator' => $operator,
+			),
+		)
+	);
+}
+
 ?>
