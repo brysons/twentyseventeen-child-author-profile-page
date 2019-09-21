@@ -27,3 +27,11 @@ Text Domain: twentyseventeen-child-author-profile-page
 .UserInfo > .avatar {
 	min-width: 100px;
 }
+
+.svg-icon > svg {
+	max-height: inherit;
+}
+.svg-icon svg :hover {
+	filter: none !important;
+}
+
