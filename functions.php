@@ -31,16 +31,18 @@ function social_link($user_data, $site) {
 	
 	$url = $base_url;
 	return <<<HTML
-	<a href="{$url}" rel="me" class="u-url">
-		<i class="fa fa-${site}${icon_type}" aria-hidden="true"></i>
-	</a>
+	<a href="{$url}" rel="me" class="u-url"><i class="fa fa-${site}${icon_type}" aria-hidden="true"></i></a>
 HTML;
 }
 
 // Filters some IndieWeb Post Kinds out of most views
-// add_action( 'pre_get_posts', 'kind_filter_config' );
+add_action( 'pre_get_posts', 'kind_filter_config' );
 function kind_filter_config( $query ) {
 	if ( is_admin() ) {
+		return;
+	}
+	if ( ! is_home() ) {
+		// Lets do this only for home for now
 		return;
 	}
 	// TODO: Get this from config
@@ -63,4 +65,14 @@ function kind_filter_config( $query ) {
 	);
 }
 
+add_filter( 'post_limits', 'author_page_unlimited', 10, 2 );
+function author_page_unlimited() {
+	if (is_author()) {
+		return 'LIMIT 0, 9999';
+	}
+}
+
+// Allow html in author bios
+remove_filter('pre_user_description', 'wp_filter_kses');
+								
 ?>

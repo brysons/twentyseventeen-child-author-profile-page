@@ -35,3 +35,7 @@ Text Domain: twentyseventeen-child-author-profile-page
 	filter: none !important;
 }
 
+.author-bio a[href] {
+	text-decoration: underline;
+}
+

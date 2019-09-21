@@ -6,7 +6,7 @@
 
     <?php
     $curauth = (isset($_GET['author_name'])) ? get_user_by('slug', $author_name) : get_userdata(intval($author));
-
+	
 	function is_categorized($cat) {
 		return $cat->slug != 'uncategorized';
 	}
@@ -17,7 +17,7 @@
     ?>
 
 	<div class="h-card">
-		<h2>About: <span class="p-name"><?php echo $curauth->display_name; ?></span></h2>
+		<h2>About <span class="p-name"><?php echo $curauth->first_name; ?></span></h2>
 		<div class="UserInfo">
 			<div class="avatar u-photo">
 				<?php echo get_avatar($curauth->id); ?>
@@ -33,11 +33,11 @@
 					<?php echo social_link($curauth, "flickr"); ?>
 				</div>
 			</div>
-			<div class="p-note"><?php echo $curauth->user_description; ?></div>
+			<div class="p-note author-bio"><?php echo $curauth->user_description; ?></div>
 		</div>
 	</div>
 	
-    <h2>Posts by <?php echo $curauth->display_name; ?>:</h2>
+    <h2>All posts:</h2>
 
     <ul>
 <!-- The Loop -->
@@ -88,5 +88,4 @@
 
     </ul>
 </div>
-<?php get_sidebar(); ?>
 <?php get_footer(); ?>
