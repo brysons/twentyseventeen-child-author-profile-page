@@ -17,7 +17,7 @@
     ?>
 
 	<div class="h-card">
-		<h2>About <span class="p-name"><?php echo $curauth->first_name; ?></span></h2>
+		<h2><span class="p-name"><?php echo $curauth->display_name; ?></span></h2>
 		<div class="UserInfo">
 			<div class="avatar u-photo">
 				<?php echo get_avatar($curauth->id); ?>
