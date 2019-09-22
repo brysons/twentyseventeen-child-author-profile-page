@@ -66,10 +66,11 @@ function kind_filter_config( $query ) {
 }
 
 add_filter( 'post_limits', 'author_page_unlimited', 10, 2 );
-function author_page_unlimited() {
+function author_page_unlimited($existing_query) {
 	if (is_author()) {
 		return 'LIMIT 0, 9999';
 	}
+	return $existing_query;
 }
 
 // Allow html in author bios
