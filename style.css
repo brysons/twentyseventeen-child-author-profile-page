@@ -19,23 +19,51 @@ Text Domain: twentyseventeen-child-author-profile-page
 	flex-wrap: wrap;
 	margin: 0 -1em;
 }
-
 .UserInfo > * {
 	margin: 0 1em;
 }
-
 .UserInfo > .avatar {
 	min-width: 100px;
 }
-
-.svg-icon > svg {
-	max-height: inherit;
-}
-.svg-icon svg :hover {
-	filter: none !important;
+.UserInfo > .info > .social {
+	font-size: 1.5rem;
 }
 
 .author-bio a[href] {
 	text-decoration: underline;
 }
 
+.posts-by-user {
+	margin-top: 2rem;
+}
+.posts-by-user > .list {
+	list-style: none;
+}
+.posts-by-user > .list > li {
+	margin: 1rem auto;
+ 	display: grid;
+	grid-template: auto auto / 3em auto;
+}
+.posts-by-user > .list > li > .thumbnail, 
+.posts-by-user > .list > li > .info {
+	grid-column: 2 / span 1;
+	
+	border-left: 2px solid lightblue;
+	padding-left: 0.7rem;
+}
+.posts-by-user > .list > li > .thumbnail img {
+	max-height: 10rem;
+	max-width: 16rem;
+	object-fit: cover;
+	object-position: center 33%;
+	border: 2px solid #444;
+}
+.posts-by-user > .list .svg-icon {
+	max-height: 1.3rem !important;
+}
+.posts-by-user > .list .svg-icon > svg {
+	max-height: inherit;
+}
+.posts-by-user > .list .svg-icon svg :hover {
+	filter: none !important;
+}
