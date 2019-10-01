@@ -14,6 +14,14 @@
 	function name($cat) {
 		return $cat->name;
 	}
+	
+	$original_content_kinds = array(
+		'article',
+		'photo',
+		'video',
+		'audio',
+		'note',
+	);
     ?>
 
 	<div class="h-card">
@@ -27,6 +35,7 @@
 				<div class="social">
 					<?php echo social_link($curauth, "github"); ?>
 					<?php echo social_link($curauth, "twitter"); ?>
+					<?php echo social_link($curauth, "linkedin"); ?>
 					<?php echo social_link($curauth, "facebook"); ?>
 					<?php echo social_link($curauth, "microblog"); ?>
 					<?php echo social_link($curauth, "instagram"); ?>
@@ -37,64 +46,151 @@
 		</div>
 	</div>
 	
-	<div class="posts-by-user">
+	<div class="posts-by-user h-feed">
 		<h2>All posts:</h2>
-		<ul class="list">
+		
+		<div class="PostsByType">
 			
-		<?php if ( have_posts() ) : while ( have_posts() ) : the_post(); ?>
+			<ul class="list original-content">
 			<?php 
-			$categories = get_the_category();
-			$categories = array_filter($categories, 'is_categorized');
-			$category_names = array_map('name', $categories);
-			$category_string = $category_names ? ' | ' . join(' & ', $category_names) : '';
+				$original_content = new WP_Query(array(
+					'author' => $curauth->id,
+					'post_type' => 'post',
+					'tax_query' => array(
+						array(
+							'taxonomy' => 'kind',
+							'field' => 'slug',
+							'terms' => $original_content_kinds,
+						),
+					),
+				));
 
-			$title = the_title_attribute( array( 'echo' => false ) ); 
-			if (empty($title)) {
-				$title = get_post_kind_slug();
-			}
+				if ( $original_content->have_posts() ) : while ( $original_content->have_posts() ) : $original_content->the_post();
+					$categories = get_the_category();
+					$categories = array_filter($categories, 'is_categorized');
+					$category_names = array_map('name', $categories);
+					$category_string = $category_names ? ' | ' . join(' & ', $category_names) : '';
 
-			$mf2_post = new MF2_Post( get_post() );
-			$kind = $mf2_post->get( 'kind', true );
-			$type = Kind_Taxonomy::get_kind_info( $kind, 'property' );
-			$cite = $mf2_post->fetch( $type );
+					$title = the_title_attribute( array( 'echo' => false ) ); 
+					if (empty($title)) {
+						$title = get_post_kind_slug();
+					}
 
-			if (get_post_kind_slug() == 'like') {
-				if ($cite['publication'] == 'Twitter') {
-					$title = 'Liked a post by ' . $cite['name'];
-				} else {
-					$title = 'Liked the post "' . $cite['name'] .'" on ' . $cite['publication'];
-				}
-			}
-			?>
-			<li class="h-entry">
-				<span class="kind">
-					<?php echo Kind_Taxonomy::get_icon(get_post_kind_slug()); ?>
-				</span>
-				<span class="info">
-					<a class="u-url p-name" 
-					   href="<?php the_permalink() ?>" 
-					   rel="bookmark" 
-					   title="Permanent Link: <?php the_title_attribute(); ?>">
-						<?php echo $title; ?>
-					</a> |
-					<span class="dt-published"><?php the_time('d M Y'); ?></span>
-					<span class="p-category"><?php echo $category_string; ?></span>
-				</span>
-				<div class="thumbnail">
-					<a href="<?php the_permalink() ?>" 
-					   title="Permanent Link: <?php the_title_attribute(); ?>">
-						<?php the_post_thumbnail() ?>
-					</a>
-				</div>
-			</li>
+					$mf2_post = new MF2_Post( get_post() );
+					$kind = $mf2_post->get( 'kind', true );
+					$type = Kind_Taxonomy::get_kind_info( $kind, 'property' );
+					$cite = $mf2_post->fetch( $type );
 
-		<?php endwhile; else: ?>
+					if (get_post_kind_slug() == 'like') {
+						if ($cite['publication'] == 'Twitter') {
+							$title = 'Liked a post by ' . $cite['name'];
+						} else {
+							$title = 'Liked the post "' . $cite['name'] .'" on ' . $cite['publication'];
+						}
+					}
+					?>
+					<li class="h-entry <?php echo $kind ?>">
+						<span class="kind">
+							<?php echo Kind_Taxonomy::get_icon(get_post_kind_slug()); ?>
+						</span>
+						<span class="info">
+							<a class="u-url p-name" 
+							   href="<?php the_permalink() ?>" 
+							   rel="bookmark" 
+							   title="Permanent Link: <?php the_title_attribute(); ?>">
+								<?php echo $title; ?>
+							</a> |
+							<span class="dt-published"><?php the_time('d M Y'); ?></span>
+							<span class="p-category"><?php echo $category_string; ?></span>
+						</span>
+						<div class="thumbnail">
+							<a href="<?php the_permalink() ?>" 
+							   title="Permanent Link: <?php the_title_attribute(); ?>">
+								<?php the_post_thumbnail() ?>
+							</a>
+						</div>
+					</li>
+
+				<?php endwhile; else: ?>
+
+					<p><?php _e('No posts by this author.'); ?></p>
+
+				<?php endif; ?>
+
+			</ul>
+
+			<?php wp_reset_postdata(); ?>
 			
-			<p><?php _e('No posts by this author.'); ?></p>
-		
-		<?php endif; ?>
-		
-		</ul>
+			<ul class="list social-interaction">
+			<?php 
+				$social_content = new WP_Query(array(
+					'author' => $curauth->id,
+					'post_type' => 'post',
+					'tax_query' => array(
+						array(
+							'taxonomy' => 'kind',
+							'field' => 'slug',
+							'terms' => $original_content_kinds,
+							'operator' => 'NOT IN',
+						),
+					),
+				));
+				if ($social_content->have_posts()) {
+					while ($social_content->have_posts()) : $social_content->the_post();
+
+
+					$categories = get_the_category();
+					$categories = array_filter($categories, 'is_categorized');
+					$category_names = array_map('name', $categories);
+					$category_string = $category_names ? ' | ' . join(' & ', $category_names) : '';
+
+					$title = the_title_attribute( array( 'echo' => false ) ); 
+					if (empty($title)) {
+						$title = get_post_kind_slug();
+					}
+
+					$mf2_post = new MF2_Post( get_post() );
+					$kind = $mf2_post->get( 'kind', true );
+					$type = Kind_Taxonomy::get_kind_info( $kind, 'property' );
+					$cite = $mf2_post->fetch( $type );
+
+					if (get_post_kind_slug() == 'like') {
+						if ($cite['publication'] == 'Twitter') {
+							$title = 'Liked a post by ' . $cite['name'];
+						} else {
+							$title = 'Liked the post "' . $cite['name'] .'" on ' . $cite['publication'];
+						}
+					}
+					?>
+					<li class="h-entry <?php echo $kind ?>">
+						<span class="kind">
+							<?php echo Kind_Taxonomy::get_icon(get_post_kind_slug()); ?>
+						</span>
+						<span class="info">
+							<a class="u-url p-name" 
+							   href="<?php the_permalink() ?>" 
+							   rel="bookmark" 
+							   title="Permanent Link: <?php the_title_attribute(); ?>">
+								<?php echo $title; ?>
+							</a> |
+							<span class="dt-published"><?php the_time('d M Y'); ?></span>
+							<span class="p-category"><?php echo $category_string; ?></span>
+						</span>
+						<div class="thumbnail">
+							<a href="<?php the_permalink() ?>" 
+							   title="Permanent Link: <?php the_title_attribute(); ?>">
+								<?php the_post_thumbnail() ?>
+							</a>
+						</div>
+					</li>
+					<?php
+					endwhile;
+				}
+
+				?>
+
+			</ul>
+		</div>
 	</div>
 </div>
 <?php get_footer(); ?>

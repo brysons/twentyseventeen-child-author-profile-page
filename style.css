@@ -39,31 +39,40 @@ Text Domain: twentyseventeen-child-author-profile-page
 .posts-by-user > .list {
 	list-style: none;
 }
-.posts-by-user > .list > li {
+.posts-by-user .list > li {
 	margin: 1rem auto;
  	display: grid;
 	grid-template: auto auto / 3em auto;
 }
-.posts-by-user > .list > li > .thumbnail, 
-.posts-by-user > .list > li > .info {
+.posts-by-user .list > li > .thumbnail, 
+.posts-by-user .list > li > .info {
 	grid-column: 2 / span 1;
 	
 	border-left: 2px solid lightblue;
 	padding-left: 0.7rem;
 }
-.posts-by-user > .list > li > .thumbnail img {
+.posts-by-user .list > li > .thumbnail img {
 	max-height: 10rem;
 	max-width: 16rem;
 	object-fit: cover;
 	object-position: center 33%;
 	border: 2px solid #444;
 }
-.posts-by-user > .list .svg-icon {
+.posts-by-user .list .svg-icon {
 	max-height: 1.3rem !important;
 }
-.posts-by-user > .list .svg-icon > svg {
+.posts-by-user .list .svg-icon > svg {
 	max-height: inherit;
 }
-.posts-by-user > .list .svg-icon svg :hover {
+.posts-by-user .list .svg-icon svg :hover {
 	filter: none !important;
+}
+
+.PostsByType {
+	display: grid;
+	grid-template: 1fr / repeat(auto-fit, minmax(240px, 1fr));
+}
+
+.PostsByType > .original-content {
+	grid-column: span 2;
 }
